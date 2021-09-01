@@ -2,19 +2,11 @@ import random
 
 def luna(card_num):
     even_num = card_num[::2]
-    odd_num = list(card_num[1::2])
-    sum_odd_num = 0
+    sum_odd_num = sum(int(el) for el in list(card_num[1::2]))
 
-    for i in odd_num:
-        sum_odd_num += int(i)
+    sum_ = sum(((int(el) * 2) // 10 + (int(el) * 2) % 10) for el in even_num)
 
-    sum_ = 0
-
-    for i in even_num:
-        tmp_num = int(i) * 2
-        sum_ += tmp_num // 10 + tmp_num % 10
-
-    return (sum_odd_num + sum_)%10
+    return (sum_odd_num + sum_) % 10
 
 def generator_card_number():
     result = str(random.randint(3, 5))

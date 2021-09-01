@@ -7,7 +7,7 @@ import json
 
 fkr = Faker()
 
-class bank_transaction:
+class BankTransaction:
     transaction_data = dict.fromkeys(['transaction_id', 'amount', 'currency', 'description', 'receiver_card_owner',
                                       'receiver_card', 'card_owner', 'card', 'card_exp_month',
                                       'card_exp_year', 'card_cvv', 'transaction_time']
@@ -92,11 +92,13 @@ class bank_transaction:
 
     def json_func(self):
         with open(f'bank_transaction #{self.transaction_id}.json', 'w') as json_file:
-            file_json = json.dump(self.transaction_data, json_file)
+            json_str = json.dumps(self.transaction_data)
+            file_json = json_file.write(json_str)
+
         return file_json
 
 
-trans_1 = bank_transaction()
+trans_1 = BankTransaction()
 print(trans_1.transaction_data)
 
 
