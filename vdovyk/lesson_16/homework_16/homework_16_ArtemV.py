@@ -1,20 +1,25 @@
-import psycopg2
-from faker import Faker
+import os
 import random
+
+import psycopg2
 from psycopg2 import sql
+from faker import Faker
 
 from constants import NAME_OF_PRODUCT
 from constants import PRODUCT_DESCRIPTION
 
 db_name = input('Please, enter Database name')
-db_user = 'postgres'
+db_user = os.environ['USER']
 db_password = 'fdedfSEDAf'
 db_host = 'localhost'
 
 
 # Create tables
 def create_table_customers():
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE EXTENSION CITEXT')
             cursor.execute('CREATE TABLE customers'
@@ -23,12 +28,14 @@ def create_table_customers():
                            'email CITEXT NOT NULL,'
                            'phone varchar(100) NOT NULL)')
 
-
     print('Table "customers" created')
 
 
 def create_table_product():
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE TABLE product'
                            '(product_id serial primary key,'
@@ -40,7 +47,10 @@ def create_table_product():
 
 
 def create_table_orders():
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE TABLE orders'
                            '(order_id serial primary key,'
@@ -53,7 +63,10 @@ def create_table_orders():
 
 
 def create_table_order_product():
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE TABLE order_product'
                            '(order_id INTEGER REFERENCES orders(order_id) on delete CASCADE,'
@@ -63,7 +76,10 @@ def create_table_order_product():
 
 
 def create_table_discount():
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE TABLE discount'
                            '(order_id INTEGER REFERENCES orders(order_id) on delete CASCADE,'
@@ -78,12 +94,16 @@ def create_table_discount():
 def create_user():
     fkr = Faker()
 
-    with psycopg2.connect(dbname=db_name, user=db_user, password=db_password, host=db_host) as conn:
+    with psycopg2.connect(dbname=db_name,
+                          user=db_user,
+                          password=db_password,
+                          host=db_host) as conn:
         with conn.cursor() as cursor:
             user_name = fkr.name()
             user_email = fkr.email()
             user_phone = fkr.phone_number()
 
+            # INSERT INTO customers (customer_name, email, phone)
             query = sql.SQL('insert into {0}({1}) values (%s, %s, %s)').format(
                 sql.Identifier('customers'),
                 sql.SQL(', ').join([sql.Identifier('customer_name'),
