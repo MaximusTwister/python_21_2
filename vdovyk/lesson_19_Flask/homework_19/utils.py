@@ -26,21 +26,21 @@ def get_hex_code():
 
 # New
 def get_flight_from():
-    flight_from_cursor = flights_coll.fing({}, {'_id': 0, 'from': 1})
+    flight_from_cursor = flights_coll.find({}, {'_id': 0, 'from': 1})
     flight_from = set([flight_from['from'] for flight_from in flight_from_cursor])
     return flight_from
 
 
 # New
 def get_flight_to():
-    flight_to_cursor = flights_coll.fing({}, {'_id': 0, 'to': 1})
+    flight_to_cursor = flights_coll.find({}, {'_id': 0, 'to': 1})
     flight_to = set([flight_to['to'] for flight_to in flight_to_cursor])
     return flight_to
 
 
 # New
 def get_price():
-    price_cursor = flights_coll.fing({}, {'_id': 0, 'price': 1})
+    price_cursor = flights_coll.find({}, {'_id': 0, 'price': 1})
     price = set([price['price'] for price in price_cursor])
     return price
 

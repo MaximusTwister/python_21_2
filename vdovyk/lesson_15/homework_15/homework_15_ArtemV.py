@@ -17,13 +17,11 @@ class FinancialAccount:
         self.__account_name = random.choice(ACCOUNTS)
         self.__balance = random.randint(1000, 10000000)/100
 
-
     def get_account(self):
         return {'account name': self.__account_name,
                 'balance': self.__balance,
                 'expenses': [str(el) for el in self.__spending_list],
                 'incomes': [str(el) for el in self.__earnings_list]}
-
 
     def output_account_info(self):
         self.__account_info_list.append([self.get_account()['account name'],

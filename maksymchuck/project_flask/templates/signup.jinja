@@ -1,0 +1,18 @@
+<form method="POST" action="/signup">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+
+    {% for element in form if element.widget.input_type != 'hidden'%}
+        <fieldset style='width: max-content'>
+            <legend>{{ element.label }}</legend>
+            {{ element }}
+            {% if element.errors %}
+                <ul>
+                    {% for error in element.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </fieldset>
+    {% endfor %}
+</form>
