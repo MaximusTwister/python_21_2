@@ -16,7 +16,7 @@ app.config['CLIENT_JWT_TOKEN'] = './static/client/jwt_tokens'               # Ne
 def signup():
     form = SignUpForm()
     if form.validate_on_submit():
-        if users_coll.find_one({'email': form.email.data}):     # проверка есть ли пользователь в базе
+        if users_coll.find_one({'email': form.email.data}):  # проверка есть ли пользователь в базе
             form.email.errors.append('This email already exist')
         else:
             query = {'name': form.name.data, 'password': form.password.data}
