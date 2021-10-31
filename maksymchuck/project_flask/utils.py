@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from os import error
 from random import getrandbits
 
 import jwt
@@ -28,7 +29,7 @@ def query_price():
 
 def query_flights():
     flights_cursor = flights_coll.find()
-    flights = set([flights for flights in flights_cursor])
+    flights = [flights for flights in flights_cursor]
     return flights
 
 
@@ -43,11 +44,27 @@ def get_hex_code():
 
 
 def encode_jwt(user_id, key):
-    print(f'Encode JWT: {user_id} : {key}')
+    print(f'Encode JWT')
     payload = {
-        'exp': datetime.utcnow() + timedelta(days=0, minutes=2),
+        'exp': datetime.utcnow() + timedelta(days=1,),
         'iat': datetime.utcnow(),
-        'sub': user_id
+        'sub': user_id,
+        'is_admin': False
     }
 
     return jwt.encode(payload, key, algorithm='HS256')
+
+
+def decode_jwt(jwt_token, key):
+    user_id = None
+    error = None
+    try:
+        payload = jwt.decode(jwt_token, key, algorithms=["HS256"])
+        print(f"Payload from token: {payload}")
+        user_id = payload.get("sub")
+    except jwt.ExpiredSignatureError:
+        error = "Signature expired. Please log in again."
+    except jwt.InvalidTokenError:
+        error = "Invalid token. Please log in again."
+
+    return user_id, error
