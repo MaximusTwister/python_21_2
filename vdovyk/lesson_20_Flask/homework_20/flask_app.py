@@ -11,7 +11,6 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['CLIENT_JWT_TOKEN'] = './static/client/jwt_tokens'               # New
 
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
@@ -22,7 +21,7 @@ def signup():
             query = {'name': form.name.data, 'password': form.password.data}
             insert_res = users_coll.insert_one(query)
             user_id = str(insert_res.inserted_id)
-            jwt_token = encode_jwt(user_id, key=app.config.get('SECRET_KEY'))
+            jwt_token: str = encode_jwt(user_id, key=app.config.get('SECRET_KEY'))
             # New
             with open(f'./static/client/jwt_tokens/jwt_token.txt', 'w') as file:
                 file.write(jwt_token)
@@ -32,6 +31,7 @@ def signup():
                                        as_attachment=True)
 
     return render_template('signup.jinja', form=form)
+
 
 # 127.0.0.1:3000/add_flight
 @app.route('/add_flight', methods=['POST'])
