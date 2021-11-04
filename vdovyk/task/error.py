@@ -14,7 +14,7 @@ class ConnectionChecker:
     """
     def check_connections(self):
         print("Check Connection")
-        for socket, last_active in self.clients.items():
+        for socket, last_active in list(self.clients.items()):
             if datetime.now() - last_active > timedelta(seconds=3):
                 print(f'Connection {socket} is stale')
                 del self.clients[socket]
