@@ -35,16 +35,20 @@ student_parser.add_argument("email",
                             required=True,
                             help="Email: {error_msg}")
 
-student_parser.add_argument("group_id",
+student_parser.add_argument("group_name",
                           type=str,
                           required=True,
-                          help="Group's id: {error_msg}")
+                          help="Group's name: {error_msg}")
 
 group_parser.add_argument("group_name",
                           type=str,
                           required=True,
                           help="Group's name: {error_msg}")
 
+group_parser.add_argument("students_",
+                          type=list,
+                          required=True,
+                          help="Students List: {error_msg}")
 
 lecture_parser.add_argument("lecture_name",
                             type=str,
@@ -85,12 +89,14 @@ student_temlate = {
     "student_id": fields.Integer,
     "student_name": fields.String,
     "group_id": fields.Integer,
+    "group": fields.String,
     "email": fields.String,
 }
 
 group_temlate = {
     "group_id": fields.Integer,
     "group_name": fields.String,
+    "students": fields.List,
 }
 
 lecture_temlate = {

@@ -1,7 +1,5 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.schema import Column, ForeignKey
-from sqlalchemy.types import Integer, String, Text
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import relationship, scoped_session, sessionmaker
 
@@ -28,14 +26,14 @@ class Students(Base):
     student_name = Column(String(100), unique=True, nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     group_id = Column(Integer, ForeignKey("groups.group_id"), nullable=False)
-    group_name = relationship("Groups", back_populates="students_")
+    groups = relationship("Groups", back_populates="students_")
 
 
 class Groups(Base):
     __tablename__ = "groups"
     group_id = Column(Integer, primary_key=True)
     group_name = Column(String(100), unique=True, nullable=False)
-    students_ = relationship("Students", back_populates="group_name")
+    students_ = relationship("Students", back_populates="groups")
 
 
 class Audiences(Base):
@@ -57,11 +55,14 @@ class Lectures(Base):
     audience_id = Column(Integer, ForeignKey("audiences.audience_id"), nullable=False)
     group_id = Column(Integer, ForeignKey("groups.group_id"), nullable=False)
     teacher_id = Column(Integer, ForeignKey("teachers.teacher_id"), nullable=False)
-    lecture_day = Column(String, nullable=False)
+    lecture_date = Column(DateTime, nullable=False)
 
 
-def init_db():
-    Base.metadata.create_all(bind=db_engine)
+class Schedules(Base):
+    __tablename__ = "schedules"
+    schedule_id = Column(Integer, primary_key=True)
+    day = Column(DateTime, nullable=False)
+    lecture_id = Column(Integer, ForeignKey("lectures.lecture_id"), nullable=False)
 
 
-init_db()
+Base.metadata.create_all(bind=db_engine)
